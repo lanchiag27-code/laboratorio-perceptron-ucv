@@ -24,7 +24,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: python -m pip install pytest pytest-cov
+        run: python -m pip install --only-binary=:all: pytest==9.2.0 pytest-cov==7.1.0
 
       - name: Run tests with coverage
         run: python -m pytest --cov=src --cov-report=xml --cov-report=term
@@ -37,13 +37,11 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v8.5.0
+        uses: SonarSource/sonarqube-scan-action@59202af334b4ba7b5db01b701b8e79f8b3bef0f4 # v8.5.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
             -Dsonar.organization=lanchiag27-code
             -Dsonar.projectKey=lanchiag27-code_laboratorio-perceptron-ucv
-            -Dsonar.sources=src
-            -Dsonar.tests=tests
             -Dsonar.python.coverage.reportPaths=coverage.xml
